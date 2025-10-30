@@ -9,6 +9,7 @@ with workflow.unsafe.imports_passed_through():
     from tools import get_weather
     from tools import get_location
     from tools import random_stuff
+    from tools import get_tools
     from helpers import tool_helpers
 
 @workflow.defn
@@ -32,10 +33,7 @@ class AgentWorkflow:
                     model="gpt-4o-mini",
                     instructions=tool_helpers.HELPFUL_AGENT_SYSTEM_INSTRUCTIONS,
                     input=input_list,
-                    tools=[get_weather.WEATHER_ALERTS_TOOL_OAI, 
-                        random_stuff.RANDOM_NUMBER_TOOL_OAI,
-                        get_location.GET_LOCATION_TOOL_OAI,
-                        get_location.GET_IP_ADDRESS_TOOL_OAI],
+                    tools=get_tools(),
                 ),
                 start_to_close_timeout=timedelta(seconds=30),
             )

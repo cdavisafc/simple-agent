@@ -11,3 +11,9 @@ def get_handler(tool_name: str):
         return get_weather_alerts
     if tool_name == "get_random_number":
         return get_random_number
+
+def get_tools():
+    return [get_weather.WEATHER_ALERTS_TOOL_OAI, 
+            random_stuff.RANDOM_NUMBER_TOOL_OAI,
+            get_location.GET_LOCATION_TOOL_OAI,
+            get_location.GET_IP_ADDRESS_TOOL_OAI]
