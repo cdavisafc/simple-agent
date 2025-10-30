@@ -1,13 +1,10 @@
-# weather_activities.py
+# get_weather_alerts.py
 
 from typing import Any
-from temporalio import activity
-import httpx
 import json
-from pydantic import BaseModel
-import openai
+from pydantic import BaseModel, Field
 from helpers import tool_helpers
-from pydantic import Field
+import httpx
 
 # Constants
 NWS_API_BASE = "https://api.weather.gov"
@@ -40,7 +37,6 @@ WEATHER_ALERTS_TOOL_OAI: dict[str, Any] = tool_helpers.oai_responses_tool_from_m
     "Get weather alerts for a US state.",
     GetWeatherAlertsRequest)
 
-@activity.defn
 async def get_weather_alerts(weather_alerts_request: GetWeatherAlertsRequest) -> str:
     """Get weather alerts for a US state.
 

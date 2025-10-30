@@ -1,13 +1,7 @@
-# weather_activities.py
+# random_stuff.py
 
 from typing import Any
-from temporalio import activity
-import httpx
-import json
-from pydantic import BaseModel
-import openai
 from helpers import tool_helpers
-from pydantic import Field
 import random
 
 RANDOM_NUMBER_TOOL_OAI: dict[str, Any] = tool_helpers.oai_responses_tool_from_model(
@@ -15,7 +9,6 @@ RANDOM_NUMBER_TOOL_OAI: dict[str, Any] = tool_helpers.oai_responses_tool_from_mo
     "Get a random number between 0 and 100.",
     None)
 
-@activity.defn
 async def get_random_number() -> str:
     """Get a random number between 0 and 100.
     """

@@ -6,9 +6,9 @@ import json
 from activities import openai_responses
 
 with workflow.unsafe.imports_passed_through():
-    from activities import get_weather_alerts
-    from activities import get_location
-    from activities import random_stuff
+    from tools import get_weather
+    from tools import get_location
+    from tools import random_stuff
     from helpers import tool_helpers
 
 @workflow.defn
@@ -32,7 +32,7 @@ class AgentWorkflow:
                     model="gpt-4o-mini",
                     instructions=tool_helpers.HELPFUL_AGENT_SYSTEM_INSTRUCTIONS,
                     input=input_list,
-                    tools=[get_weather_alerts.WEATHER_ALERTS_TOOL_OAI, 
+                    tools=[get_weather.WEATHER_ALERTS_TOOL_OAI, 
                         random_stuff.RANDOM_NUMBER_TOOL_OAI,
                         get_location.GET_LOCATION_TOOL_OAI,
                         get_location.GET_IP_ADDRESS_TOOL_OAI],
@@ -68,33 +68,15 @@ class AgentWorkflow:
         input_list += [
             i.model_dump() if hasattr(i, "model_dump") else i
         ]
+        # execute dynamic activity with the tool name chosen by the LLM
+        # and the arguments crafted by the LLM
+        args = json.loads(item.arguments) if isinstance(item.arguments, str) else item.arguments
 
-        if item.name == "get_weather_alerts":
-
-            result = await workflow.execute_activity(
-                get_weather_alerts.get_weather_alerts,
-                get_weather_alerts.GetWeatherAlertsRequest(state=json.loads(item.arguments)["state"]),
-                start_to_close_timeout=timedelta(seconds=30),
-            )
-
-        elif item.name == "get_random_number":
-            result = await workflow.execute_activity(
-                random_stuff.get_random_number,
-                start_to_close_timeout=timedelta(seconds=30),
-            )
-
-        elif item.name == "get_location_info":
-            result = await workflow.execute_activity(
-                get_location.get_location_info,
-                get_location.GetLocationRequest(ipaddress=json.loads(item.arguments)["ipaddress"]),
-                start_to_close_timeout=timedelta(seconds=30),
-            )
-
-        elif item.name == "get_ip_address":
-            result = await workflow.execute_activity(
-                get_location.get_ip,
-                start_to_close_timeout=timedelta(seconds=30),
-            )
+        result = await workflow.execute_activity(
+            item.name,
+            args,
+            start_to_close_timeout=timedelta(seconds=30),
+        )
 
         # print the tool call result
         # print(f"Tool call result: {result}")

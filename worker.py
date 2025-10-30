@@ -4,7 +4,7 @@ from temporalio.client import Client
 from temporalio.worker import Worker
 
 from workflows.agent import AgentWorkflow
-from activities import openai_responses, get_weather_alerts, random_stuff, get_location
+from activities import openai_responses, tool_invoker
 from temporalio.contrib.pydantic import pydantic_data_converter
 
 from concurrent.futures import ThreadPoolExecutor
@@ -24,10 +24,7 @@ async def main():
         ],
         activities=[
             openai_responses.create,
-            get_weather_alerts.get_weather_alerts,
-            random_stuff.get_random_number,
-            get_location.get_location_info,
-            get_location.get_ip,
+            tool_invoker.dynamic_tool_activity,
         ],
         activity_executor=ThreadPoolExecutor(max_workers=10),
     )

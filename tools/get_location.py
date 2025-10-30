@@ -1,10 +1,9 @@
-# weather_activities.py
+# get_location.py
 
 from typing import Any
 from temporalio import activity
 import requests
 from pydantic import BaseModel
-import openai
 from helpers import tool_helpers
 from pydantic import Field
 
@@ -26,13 +25,11 @@ GET_IP_ADDRESS_TOOL_OAI: dict[str, Any] = tool_helpers.oai_responses_tool_from_m
     "Get the IP address of the current machine.",
     None)
 
-@activity.defn
-def get_ip() -> str:
+def get_ip_address() -> str:
     response = requests.get("https://icanhazip.com")
     response.raise_for_status()
     return response.text.strip()
 
-@activity.defn
 def get_location_info(req: GetLocationRequest) -> str:
     response = requests.get(f"http://ip-api.com/json/{req.ipaddress}")
     response.raise_for_status()
