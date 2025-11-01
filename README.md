@@ -1,4 +1,4 @@
-# A very simple agent
+# Basic Agentic Loop with Tool Calling
 
 This very simple agent responds to a user request. If the agent determines that no
 tools are needed, it is supposed to answer in haikus (but doesn't always). This agent
@@ -30,7 +30,7 @@ uv run python -m start_workflow
 ```
 ## Surviving outages
 
-Because this agent uses Temporal for resilience, it will survive a whole host of different infrastructure problems. Here are just a couple:
+Because this agent uses Temporal for resilience, it will survive a whole host of different infrastructure problems. Here are just a couple of examples:
 
 ### Network outages - using `pfctl` on a Mac
 

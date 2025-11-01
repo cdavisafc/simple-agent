@@ -18,7 +18,7 @@ async def main():
 
     worker = Worker(
         client,
-        task_queue="chaotic-agent-python-task-queue",
+        task_queue="tool-invoking-agent-python-task-queue",
         workflows=[
             AgentWorkflow,
         ],

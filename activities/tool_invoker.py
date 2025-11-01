@@ -4,6 +4,7 @@ from temporalio.common import RawValue
 import inspect
 from pydantic import BaseModel
 
+# We use dynamic activities to allow the agent to be defined independently of the tools it can call.
 @activity.defn(dynamic=True)
 async def dynamic_tool_activity(args: Sequence[RawValue]) -> dict:
     from tools import get_handler

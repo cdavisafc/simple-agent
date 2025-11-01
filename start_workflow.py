@@ -16,12 +16,12 @@ async def main():
 
     query = sys.argv[1] if len(sys.argv) > 1 else "Tell me about recursion"
 
-    # Submit the Hello World workflow for execution
+    # Submit the the agent workflow for execution
     result = await client.execute_workflow(
         AgentWorkflow.run,
         query,
-        id=f"my-workflow-id-{uuid.uuid4()}",
-        task_queue="chaotic-agent-python-task-queue",
+        id=f"agentic-loop-id-{uuid.uuid4()}",
+        task_queue="tool-invoking-agent-python-task-queue",
     )
     print(f"Result: {result}")
 

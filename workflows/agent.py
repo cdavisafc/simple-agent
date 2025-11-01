@@ -3,14 +3,10 @@ from datetime import timedelta
 
 import json
 
-from activities import openai_responses
-
 with workflow.unsafe.imports_passed_through():
-    from tools import get_weather
-    from tools import get_location
-    from tools import random_stuff
     from tools import get_tools
     from helpers import tool_helpers
+    from activities import openai_responses
 
 @workflow.defn
 class AgentWorkflow:
@@ -19,12 +15,10 @@ class AgentWorkflow:
 
         input_list = [{"type": "message", "role": "user", "content": input}]
 
+        # The agentic loop
         while True:
 
             print(80 * "=")
-
-            # print the input list
-            # print(f"Input list: {input_list}")
                 
             # consult the LLM
             result = await workflow.execute_activity(
@@ -56,7 +50,7 @@ class AgentWorkflow:
 
             # if the result is not a tool call we will just respond with a message
             else:
-                print(f"No tools needed, responding with a message: {result.output_text}")
+                print(f"No tools chosen, responding with a message: {result.output_text}")
                 return result.output_text
 
 
@@ -76,8 +70,6 @@ class AgentWorkflow:
             start_to_close_timeout=timedelta(seconds=30),
         )
 
-        # print the tool call result
-        # print(f"Tool call result: {result}")
         print(f"Made a tool call to {item.name}")
 
         return result
